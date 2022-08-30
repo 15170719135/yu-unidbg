@@ -59,6 +59,8 @@ public class mfwjiu extends AbstractJni{
         });
     };
 
+    //https://blog.csdn.net/Qiled/article/details/122149949
+    // HookZZ ,再调用前 后 可以对参数修改
     public void hook_3151C(){
         // 获取HookZz对象
         IHookZz hookZz = HookZz.getInstance(emulator); // 加载HookZz，支持inline hook，文档看https://github.com/jmpews/HookZz

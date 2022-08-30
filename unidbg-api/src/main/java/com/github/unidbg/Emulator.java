@@ -58,7 +58,7 @@ public interface Emulator<T extends NewFileIO> extends Closeable, ArmDisassemble
      * trace instruction
      * note: low performance
      */
-    TraceHook traceCode();
+    TraceHook traceCode(); //打印断点
     TraceHook traceCode(long begin, long end);
     TraceHook traceCode(long begin, long end, TraceCodeListener listener);
 
@@ -99,7 +99,7 @@ public interface Emulator<T extends NewFileIO> extends Closeable, ArmDisassemble
 
     String getProcessName();
 
-    Debugger attach();
+    Debugger attach(); //给虚拟机添加,如添加断点(切入点,可以打印日志啥的 做一些操作啥的) emulator.attach().addBreakPoint
 
     Debugger attach(DebuggerType type);
 

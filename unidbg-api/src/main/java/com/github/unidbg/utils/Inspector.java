@@ -307,7 +307,7 @@ public class Inspector {
 	}
 
 	/**
-	 * 侦察发送的数据
+	 * 侦察发送的数据 (其实就是打印日志信息)
 	 */
 	public static void inspect(byte[] data, String label) {
 		inspect(label, data, WPE);

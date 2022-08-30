@@ -43,7 +43,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-
+//继承这个类补环境
 public abstract class AbstractJni implements Jni {
 
     private static final Log log = LogFactory.getLog(AbstractJni.class);

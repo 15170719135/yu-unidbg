@@ -39,12 +39,16 @@ class RunExecutable {
                 }
             }
 
+//            加载可执行的模块
             LinuxModule module = (LinuxModule) emulator.loadLibrary(executable);
+//            获取依赖模块
             LinuxModule libc = (LinuxModule) module.getDependencyModule("libc");
+            //          environ是一个全局的外部变量
             ElfSymbol environ = libc.getELFSymbolByName("environ");
             if (environ != null) {
                 Pointer pointer = UnidbgPointer.pointer(emulator, libc.base + environ.value);
                 assert pointer != null;
+//               打印环境变量名称
                 System.err.println("environ=" + pointer + ", value=" + pointer.getPointer(0));
             }
             Number __errno = libc.callFunction(emulator, "__errno");
@@ -54,11 +58,13 @@ class RunExecutable {
             int value = pointer.getInt(0);
             assert value == UnixEmulator.EACCES;
 
+        //监控code
 //             emulator.traceCode();
             Pointer strerror = UnidbgPointer.pointer(emulator, libc.callFunction(emulator, "strerror", UnixEmulator.ECONNREFUSED).intValue() & 0xffffffffL);
             assert strerror != null;
             System.out.println(strerror.getString(0));
 
+//打印断点
 //             emulator.traceCode();
 //             emulator.attach().addBreakPoint(libc.base + 0x00038F20);
             System.out.println("exit code: " + module.callEntry(emulator, args) + ", offset=" + (System.currentTimeMillis() - start) + "ms");

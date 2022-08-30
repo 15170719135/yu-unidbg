@@ -8,7 +8,7 @@ import com.github.unidbg.arm.backend.DebugHook;
 import java.io.Closeable;
 
 public interface Debugger extends Breaker, DebugHook, BlockHook, Closeable {
-
+    //如添加断点(切入点,可以打印日志啥的 做一些操作啥的) emulator.attach().addBreakPoint
     BreakPoint addBreakPoint(Module module, String symbol);
     BreakPoint addBreakPoint(Module module, String symbol, BreakPointCallback callback);
     BreakPoint addBreakPoint(Module module, long offset);

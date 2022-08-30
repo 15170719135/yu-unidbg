@@ -161,7 +161,7 @@ public abstract class AbstractEmulator<T extends NewFileIO> implements Emulator<
 
     protected abstract Dlfcn createDyld(SvcMemory svcMemory);
 
-    protected abstract UnixSyscallHandler<T> createSyscallHandler(SvcMemory svcMemory);
+    protected abstract UnixSyscallHandler<T> createSyscallHandler(SvcMemory svcMemory); //个人理解 创建模拟器同步的处理器(可以做事)
 
     protected abstract byte[] assemble(Iterable<String> assembly);
 

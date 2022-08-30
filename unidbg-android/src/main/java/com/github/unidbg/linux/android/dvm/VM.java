@@ -38,7 +38,7 @@ public interface VM {
     /**
      * @param interfaceClasses 如果不为空的话，第一个为superClass，其它的为interfaces
      */
-    DvmClass resolveClass(String className, DvmClass... interfaceClasses);
+    DvmClass resolveClass(String className, DvmClass... interfaceClasses);  //理解为反射出一个jni的类型类型
 
     DvmClass findClass(String className);
 
@@ -100,7 +100,7 @@ public interface VM {
      */
     void throwException(DvmObject<?> throwable);
 
-    void setVerbose(boolean verbose);
+    void setVerbose(boolean verbose); // 设置是否打印Jni调用细节
 
     void setDvmClassFactory(DvmClassFactory factory);
 

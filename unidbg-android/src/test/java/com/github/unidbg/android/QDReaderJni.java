@@ -29,7 +29,9 @@ import javax.crypto.spec.DESedeKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import java.io.File;
 import java.io.IOException;
-
+/**
+ * 监控onLoaded事件
+ */
 public class QDReaderJni implements ModuleListener {
 
     private static final int SDK = 23;
@@ -61,7 +63,7 @@ public class QDReaderJni implements ModuleListener {
         vm.setVerbose(true);
         DalvikModule dm = vm.loadLibrary(new File("unidbg-android/src/test/resources/example_binaries/armeabi-v7a/libd-lib.so"), false);
         dm.callJNI_OnLoad(emulator);
-
+        //   模拟 类a.d
         d = vm.resolveClass("a/d");
     }
 
@@ -81,6 +83,7 @@ public class QDReaderJni implements ModuleListener {
     @Override
     public void onLoaded(Emulator<?> emulator, Module module) {
         if ("libcrypto.so".equals(module.name)) {
+            //        监控so文件加载完成后调用的方法
             Symbol DES_set_key = module.findSymbolByName("DES_set_key", false);
             Symbol DES_set_key_unchecked = module.findSymbolByName("DES_set_key_unchecked", false);
             if (DES_set_key_unchecked == null && DES_set_key != null) {
@@ -91,6 +94,7 @@ public class QDReaderJni implements ModuleListener {
 
     private void c() throws Exception {
         IxHook xHook = XHookImpl.getInstance(emulator);
+        //    注册hook方法，对libd-lib.so里的free进行hook
         xHook.register("libd-lib.so", "free", new ReplaceCallback() {
             @Override
             public HookStatus onCall(Emulator<?> emulator, long originFunction) {
@@ -119,6 +123,7 @@ public class QDReaderJni implements ModuleListener {
 
         cipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(iv.getBytes()));
         byte[] decrypted = cipher.doFinal(array.getValue());
+        //       打印解密后的二进制字节信息
         Inspector.inspect(decrypted, "Decrypted");
     }
 

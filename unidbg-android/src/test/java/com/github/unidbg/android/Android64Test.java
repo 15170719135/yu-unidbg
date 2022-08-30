@@ -53,7 +53,7 @@ public class Android64Test extends AbstractJni {
         }
         @Override
         protected long fork(Emulator<?> emulator) {
-            return emulator.getPid();
+            return emulator.getPid();  //    获取线程id
         }
     }
 
@@ -64,11 +64,11 @@ public class Android64Test extends AbstractJni {
                 Arrays.asList(new HypervisorFactory(true), new DynarmicFactory(true), new Unicorn2Factory(true))) {
             @Override
             protected UnixSyscallHandler<AndroidFileIO> createSyscallHandler(SvcMemory svcMemory) {
-                return new MyARMSyscallHandler(svcMemory);
+                return new MyARMSyscallHandler(svcMemory); //
             }
         };
 
-        Memory memory = emulator.getMemory();
+        Memory memory = emulator.getMemory(); //        获取模拟器内存对象
         emulator.getSyscallHandler().setEnableThreadDispatcher(true);
         AndroidResolver resolver = new AndroidResolver(23);
         memory.setLibraryResolver(resolver);
@@ -80,9 +80,11 @@ public class Android64Test extends AbstractJni {
         vm.setJni(this);
         DalvikModule dm = vm.loadLibrary(new File("unidbg-android/src/test/native/android/libs/arm64-v8a/libnative.so"), false);
         dm.callJNI_OnLoad(emulator);
-        this.cJniTest = vm.resolveClass("com/github/unidbg/android/JniTest");
+        this.cJniTest = vm.resolveClass("com/github/unidbg/android/JniTest"); //        需要模拟的类
 
-        {
+
+        {//   动态分配栈
+
             Pointer pointer = memory.allocateStack(0x100);
             System.out.println(new Stat64(pointer));
         }
@@ -170,6 +172,7 @@ public class Android64Test extends AbstractJni {
         Logger.getLogger(AbstractEmulator.class).setLevel(Level.INFO);
         Logger.getLogger("com.github.unidbg.thread").setLevel(Level.INFO);
         Logger.getLogger("com.github.unidbg.linux.AndroidSyscallHandler").setLevel(Level.INFO);
+        //        调用入口函数，这里指的是test.cpp里的main方法
         System.err.println("exit code: " + module.callEntry(emulator) + ", backend=" + emulator.getBackend());
     }
 
