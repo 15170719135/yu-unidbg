@@ -1,5 +1,7 @@
-package com.mfw;
-
+package com.bilibili.nativelibrary;
+import com.github.unidbg.Emulator;
+import com.github.unidbg.hook.hookzz.*;
+import com.github.unidbg.linux.android.dvm.AbstractJni;
 import com.github.unidbg.AndroidEmulator;
 import com.github.unidbg.Module;
 import com.github.unidbg.linux.android.AndroidEmulatorBuilder;
@@ -8,41 +10,43 @@ import com.github.unidbg.linux.android.dvm.*;
 import com.github.unidbg.linux.android.dvm.api.PackageInfo;
 import com.github.unidbg.linux.android.dvm.jni.ProxyDvmObject;
 import com.github.unidbg.memory.Memory;
+import com.github.unidbg.utils.Inspector;
+import com.mfw.main;
+import com.sun.jna.Pointer;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-// implements IOResolver<AndroidFileIO>
-public class main extends AbstractJni {
+public class LibBili extends AbstractJni {
     private final AndroidEmulator emulator; //AndroidARM64Emulator
     private final VM vm;
     private final Memory memory;
     private final Module module;
     private DvmObject<?> obj;
 
-    public main() {
+    public LibBili() {
         emulator = AndroidEmulatorBuilder
-                .for64Bit()
-                .setProcessName("com.mfw.roadbook")
+                .for32Bit()
+                .setProcessName("tv.danmaku.bili")
                 .build();
 
         memory = emulator.getMemory();
         memory.setLibraryResolver(new AndroidResolver(23));
 //        vm = emulator.createDalvikVM(new File("D:\\hecai_pan\\apk\\mfw10.8.0.apk")); //公司
-        vm = emulator.createDalvikVM(new File("C:\\D\\YiDong_Pan\\apk\\mfw10.8.0.apk"));//家
+        vm = emulator.createDalvikVM(new File("C:\\D\\YiDong_Pan\\apk\\b站.apk"));//家
 //        vm = emulator.createDalvikVM();
         vm.setJni(this);
         vm.setVerbose(true);
-        DalvikModule dalvikModule = vm.loadLibrary(new File("unidbg-android/src/test/java/com/mfw/libmfw.so"), true);
+        DalvikModule dalvikModule = vm.loadLibrary(new File("unidbg-android/src/test/java/com/bilibili/nativelibrary/so/libbili.so"), true);
         module = dalvikModule.getModule();
         dalvikModule.callJNI_OnLoad(emulator);
     }
 
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        main mainActivity = new main();
+        LibBili mainActivity = new LibBili();
         System.out.println("load the moudle" + (System.currentTimeMillis() - start) + "ms");
+
         mainActivity.call_396c8();
     }
 

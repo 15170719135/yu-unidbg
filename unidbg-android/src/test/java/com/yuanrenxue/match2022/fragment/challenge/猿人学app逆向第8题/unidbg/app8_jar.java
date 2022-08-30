@@ -1,4 +1,4 @@
-package com.muyang.猿人学app逆向第8题.unidbg;
+package com.yuanrenxue.match2022.fragment.challenge.猿人学app逆向第8题.unidbg;
 
 import com.github.unidbg.AndroidEmulator;
 import com.github.unidbg.Module;
