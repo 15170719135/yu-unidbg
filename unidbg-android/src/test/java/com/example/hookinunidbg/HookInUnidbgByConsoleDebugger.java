@@ -22,7 +22,8 @@ import unicorn.ArmConst;
  
 import java.io.File;
 import java.nio.charset.StandardCharsets;
- 
+
+//https://blog.csdn.net/xubaoyong/article/details/122697618?spm=1001.2014.3001.5502
 public class HookInUnidbgByConsoleDebugger {
     private static final Log logger = LogFactory.getLog(HookInUnidbgByConsoleDebugger.class);
     private final AndroidEmulator emulator;
@@ -32,9 +33,9 @@ public class HookInUnidbgByConsoleDebugger {
     public static void main(String[] args) {
         HookInUnidbgByConsoleDebugger mydemo = new HookInUnidbgByConsoleDebugger();
 //        单行进行hook
-//        mydemo.HookByConsoleDebugger4SingleLine();
+        mydemo.HookByConsoleDebugger4SingleLine();
 //       对输入、输出进行hook
-        //      mydemo.HookByConsoleDebugger();
+              mydemo.HookByConsoleDebugger();
 
         mydemo.replaceArgByConsoleDebugger();
         mydemo.call();
