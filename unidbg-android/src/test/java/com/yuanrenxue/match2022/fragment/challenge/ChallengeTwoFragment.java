@@ -39,7 +39,7 @@ public class ChallengeTwoFragment {
         memory.setLibraryResolver(resolver);
 
         vm = emulator.createDalvikVM(new File("unidbg-android/src/test/java/com/yuanrenxue/match2022/fragment/challenge/yuanrenxue17.apk")); //apk
-        vm.setVerbose(false);
+        vm.setVerbose(true);
         DalvikModule dm = vm.loadLibrary(new File("unidbg-android/src/test/java/com/yuanrenxue/match2022/fragment/challenge/so/libmatch02.so"), false);
         dm.callJNI_OnLoad(emulator);
     }
