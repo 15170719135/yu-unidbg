@@ -76,6 +76,7 @@ public class LibBili extends AbstractJni {
         Number number = module.callFunction(emulator, 0x1c97 +1, list.toArray()); //上面日志会打印这个方法地址
 //        System.out.println(dvmObjectres);
 
+
 //        System.out.println(vm.getObject(number.intValue()).getValue().toString());
     }
 
