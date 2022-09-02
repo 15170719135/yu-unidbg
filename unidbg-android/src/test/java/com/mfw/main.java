@@ -29,9 +29,9 @@ public class main extends AbstractJni {
 
         memory = emulator.getMemory();
         memory.setLibraryResolver(new AndroidResolver(23));
-//        vm = emulator.createDalvikVM(new File("D:\\hecai_pan\\apk\\mfw10.8.0.apk")); //公司
-        vm = emulator.createDalvikVM(new File("C:\\D\\YiDong_Pan\\apk\\mfw10.8.0.apk"));//家
-//        vm = emulator.createDalvikVM();
+        vm = emulator.createDalvikVM(new File("D:\\hecai_pan\\apk\\mfw10.8.0.apk")); //公司
+//        vm = emulator.createDalvikVM(new File("C:\\D\\YiDong_Pan\\apk\\mfw10.8.0.apk"));//家
+
         vm.setJni(this);
         vm.setVerbose(true);
         DalvikModule dalvikModule = vm.loadLibrary(new File("unidbg-android/src/test/java/com/mfw/libmfw.so"), true);

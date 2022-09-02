@@ -1,4 +1,4 @@
-package com.muyang.马蜂窝算法还原资料;
+package com.mfw;
 
 import com.github.unidbg.Emulator;
 import com.github.unidbg.hook.hookzz.*;
@@ -16,16 +16,23 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+// 9.3.7 版本
 public class mfwjiu extends AbstractJni{
     private final AndroidEmulator emulator;
     private final VM vm;
     private final Module module;
 
+    public static void main(String[] args) throws Exception {
+        mfwjiu test = new mfwjiu();
+//        test.hook_312E0();
+        test.hook_3151C();
+        System.out.println(test.xPreAuthencode());
+    }
     mfwjiu() {
         emulator = AndroidEmulatorBuilder.for32Bit().setProcessName("com.mfw.roadbook").build(); // 创建模拟器实例
         final Memory memory = emulator.getMemory(); // 模拟器的内存操作接口
         memory.setLibraryResolver(new AndroidResolver(23)); // 设置系统类库解析
-        vm = emulator.createDalvikVM(new File("unidbg-android/src/test/java/com/mfw/mfw9.3.7.apk")); // 创建Android虚拟机
+        vm = emulator.createDalvikVM(new File("D:\\hecai_pan\\apk\\mfw9.3.7.apk")); // 创建Android虚拟机
         DalvikModule dm = vm.loadLibrary("mfw", true); // 加载so到虚拟内存
         module = dm.getModule(); //获取本SO模块的句柄
 
@@ -73,15 +80,15 @@ public class mfwjiu extends AbstractJni{
             public void preCall(Emulator<?> emulator, HookZzArm32RegisterContext ctx, HookEntryInfo info) {
                 // 类似于Frida args[0]
                 Pointer input = ctx.getPointerArg(0);
-                byte[] inputhex = input.getByteArray(0, 20);
-                Inspector.inspect(inputhex, "IV");
+                byte[] inputhex = input.getByteArray(0, 20); //读取20个长度
+                Inspector.inspect(inputhex, "IV ====");
 
                 Pointer text = ctx.getPointerArg(1);
                 byte[] texthex = text.getByteArray(0, 64);
-                Inspector.inspect(texthex, "block");
+                Inspector.inspect(texthex, "block ==== ");
                 ctx.push(input);
                 ctx.push(text);
-            };
+            }
 
             @Override
             // 方法执行后
@@ -117,10 +124,5 @@ public class mfwjiu extends AbstractJni{
         return result;
     }
 
-    public static void main(String[] args) throws Exception {
-        mfwjiu test = new mfwjiu();
-//        test.hook_312E0();
-        test.hook_3151C();
-        System.out.println(test.xPreAuthencode());
-    }
+
 }

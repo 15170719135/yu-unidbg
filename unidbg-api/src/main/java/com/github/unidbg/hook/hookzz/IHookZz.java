@@ -7,7 +7,7 @@ import com.github.unidbg.hook.IHook;
 import com.github.unidbg.hook.InlineHook;
 import com.github.unidbg.hook.ReplaceCallback;
 import com.sun.jna.Pointer;
-
+//HookZz为Dobby的前身，32位模式下推荐使用HookZz
 public interface IHookZz extends IHook, InlineHook {
 
     void enable_arm_arm64_b_branch();
