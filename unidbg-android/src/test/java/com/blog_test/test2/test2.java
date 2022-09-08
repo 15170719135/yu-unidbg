@@ -29,6 +29,15 @@ public class test2 extends AbstractJni{
     private final VM vm;
     private final Module module;
 
+    //https://blog.csdn.net/qq_38851536/article/details/117419041
+    public static void main(String[] args) {
+        test2 test = new test2();
+        test.patchVerify();
+        test.patchVerify1();
+        test.HookMDStringold();
+        System.out.println(test.calculateS()); //目标函数
+    }
+
     test2() {
         // 创建模拟器实例,进程名建议依照实际进程名填写，可以规避针对进程名的校验
         emulator = AndroidEmulatorBuilder.for32Bit().setProcessName("com.sina.International").build();
@@ -66,14 +75,24 @@ public class test2 extends AbstractJni{
     }
 
     public void patchVerify(){
-        int patchCode = 0x4FF00100; //
-        emulator.getMemory().pointer(module.base + 0x1E86).setInt(0,patchCode);
+        if (false){
+            // 修改指令, 改变其返回值
+            int patchCode = 0x4FF00100; // mov r0,1  汇编指令对呀的  Thumb 机器码
+            //这儿地址可别+1了，Thumb 的+1只在运行和Hook时需要考虑，打 Patch 可别想
+            emulator.getMemory().pointer(module.base + 0x1E86).setInt(0,patchCode);
+        }
+
     }
 
+    /*
+    我们的Patch效果非常ok，帮助我们绕过了签名校验的烦人逻辑。但有些情况下，我们可能要动态打Patch，或者我们并不想上什么网站
+    ，看MOV R0,1的机器码是什么，这时候可以使用Unidbg给我们封装的Patch方法
+     */
     public void patchVerify1(){
         Pointer pointer = UnidbgPointer.pointer(emulator, module.base + 0x1E86);
         assert pointer != null;
         byte[] code = pointer.getByteArray(0, 4);
+        //地址上的机器码指令 是不是 FF F7 EB FE  ??
         if (!Arrays.equals(code, new byte[]{ (byte)0xFF, (byte) 0xF7, (byte) 0xEB, (byte) 0xFE })) { // BL sub_1C60
             throw new IllegalStateException(Inspector.inspectString(code, "patch32 code=" + Arrays.toString(code)));
         }
@@ -109,11 +128,5 @@ public class test2 extends AbstractJni{
         });
     }
 
-    public static void main(String[] args) {
-        test2 test = new test2();
-        test.patchVerify();
-        test.patchVerify1();
-        test.HookMDStringold();
-        System.out.println(test.calculateS()); //目标
-    }
+
 }
