@@ -1,6 +1,7 @@
 package com.github.unidbg.linux.android.dvm;
 
 public interface Jni {
+    //补环境
 
     float callStaticFloatMethod(BaseVM vm, DvmClass dvmClass, DvmMethod dvmMethod, VarArg varArg);
     float callStaticFloatMethod(BaseVM vm, DvmClass dvmClass, String signature, VarArg varArg);

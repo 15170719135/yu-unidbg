@@ -34,7 +34,7 @@ public class test2 extends AbstractJni{
         test2 test = new test2();
         test.patchVerify();
         test.patchVerify1();
-        test.HookMDStringold();
+        test.HookMDStringold(); // hook MDStringOld
         System.out.println(test.calculateS()); //目标函数
     }
 
@@ -56,8 +56,7 @@ public class test2 extends AbstractJni{
         module = dm.getModule();
         vm.setJni(this); // 设置JNI
         vm.setVerbose(true); // 打印日志
-        // 样本连JNI OnLoad都没有
-         dm.callJNI_OnLoad(emulator); // 调用JNI OnLoad
+         //dm.callJNI_OnLoad(emulator); // 调用JNI OnLoad
     };
 
     public String calculateS(){
@@ -106,6 +105,20 @@ public class test2 extends AbstractJni{
         }
     };
 
+    /*
+        function hookMDStringOld() {
+    var baseAddr = Module.findBaseAddress("libutility.so")
+    var MDStringOld = baseAddr.add(0x1BD0).add(0x1)
+    Interceptor.attach(MDStringOld, {
+        onEnter: function (args) {
+            console.log("input:\n", hexdump(this.arg0))
+        },
+        onLeave: function (retval) {
+            console.log("result:\n", hexdump(retval))
+        }
+    })
+}
+     */
     public void HookMDStringold(){
         // 加载HookZz
         IHookZz hookZz = HookZz.getInstance(emulator);
@@ -116,14 +129,14 @@ public class test2 extends AbstractJni{
             public void preCall(Emulator<?> emulator, HookZzArm32RegisterContext ctx, HookEntryInfo info) {
                 // 类似于Frida args[0]
                 Pointer input = ctx.getPointerArg(0);
-                System.out.println("input:" + input.getString(0));
+                System.out.println("MDStringold input:" + input.getString(0));
             };
 
             @Override
             // 类似于 frida onLeave
             public void postCall(Emulator<?> emulator, HookZzArm32RegisterContext ctx, HookEntryInfo info) {
                 Pointer result = ctx.getPointerArg(0);
-                System.out.println("input:" + result.getString(0));
+                System.out.println("MDStringold res:" + result.getString(0));
             }
         });
     }

@@ -53,7 +53,7 @@ public interface VM {
 
     DalvikModule loadLibrary(String libname, boolean forceCallInit);
     DalvikModule loadLibrary(String libname, byte[] raw, boolean forceCallInit);
-    DalvikModule loadLibrary(File elfFile, boolean forceCallInit);
+    DalvikModule loadLibrary(File elfFile, boolean forceCallInit); //forceCallInit: 加载so 是是否执行 init 方法(最好true , 不然可能会乱码)
 
     LibraryFile findLibrary(String soName);
 
