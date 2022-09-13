@@ -28,9 +28,11 @@ public class zuiyou extends AbstractJni{
 
     public static void main(String[] args) throws Exception {
         zuiyou test = new zuiyou();
-//        test.hook65540();
+        //sign函数前需要先执行native_init函数 (补环境)
         test.native_init();
-//        System.out.println(test.callSign());
+        // test.hook65540(); //分析算法 函数 sub_65540疑似哈希函数，包含初始化魔数的代码
+//        test.callSign(); //补环境
+//        System.out.println(test.callSign()); //主动调用 callMd5
         test.callMd5();
     }
 

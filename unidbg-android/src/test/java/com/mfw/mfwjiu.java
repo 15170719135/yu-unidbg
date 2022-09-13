@@ -16,7 +16,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-// 9.3.7 版本
+// 9.3.7 版本 xPreAuthencode 32位
 public class mfwjiu extends AbstractJni{
     private final AndroidEmulator emulator;
     private final VM vm;
@@ -26,20 +26,22 @@ public class mfwjiu extends AbstractJni{
         mfwjiu test = new mfwjiu();
 //        test.hook_312E0();
         test.hook_3151C();
-        System.out.println(test.xPreAuthencode());
+        System.out.println(test.xPreAuthencode()); //目标函数
     }
-    mfwjiu() {
-        emulator = AndroidEmulatorBuilder.for32Bit().setProcessName("com.mfw.roadbook").build(); // 创建模拟器实例
-        final Memory memory = emulator.getMemory(); // 模拟器的内存操作接口
-        memory.setLibraryResolver(new AndroidResolver(23)); // 设置系统类库解析
-        vm = emulator.createDalvikVM(new File("D:\\hecai_pan\\apk\\mfw9.3.7.apk")); // 创建Android虚拟机
-        DalvikModule dm = vm.loadLibrary("mfw", true); // 加载so到虚拟内存
-        module = dm.getModule(); //获取本SO模块的句柄
+    public String xPreAuthencode(){
+        List<Object> list = new ArrayList<>(10);
+        list.add(vm.getJNIEnv()); // 第一个参数是env
+        list.add(0); // 第二个参数，实例方法是jobject，静态方法是jclazz，直接填0，一般用不到。
+        Object custom = null;
+        DvmObject<?> context = vm.resolveClass("android/content/Context").newObject(custom);// context
+        list.add(vm.addLocalObject(context));
+        list.add(vm.addLocalObject(new StringObject(vm, "muyang")));
+        list.add(vm.addLocalObject(new StringObject(vm, "com.mfw.roadbook")));
 
-        vm.setJni(this);
-        vm.setVerbose(true);
-        dm.callJNI_OnLoad(emulator);
-    };
+        Number number = module.callFunction(emulator, 0x2e301, list.toArray());
+        String result = vm.getObject(number.intValue()).getValue().toString();
+        return result;
+    }
     public void hook_312E0(){
         // 获取HookZz对象
         IHookZz hookZz = HookZz.getInstance(emulator); // 加载HookZz
@@ -65,6 +67,9 @@ public class mfwjiu extends AbstractJni{
             }
         });
     };
+
+
+
 
     //https://blog.csdn.net/Qiled/article/details/122149949
     // HookZZ ,再调用前 后 可以对参数修改
@@ -107,22 +112,19 @@ public class mfwjiu extends AbstractJni{
         hookZz.disable_arm_arm64_b_branch();
     };
 
+    mfwjiu() {
+        emulator = AndroidEmulatorBuilder.for32Bit().setProcessName("com.mfw.roadbook").build(); // 创建模拟器实例
+        final Memory memory = emulator.getMemory(); // 模拟器的内存操作接口
+        memory.setLibraryResolver(new AndroidResolver(23)); // 设置系统类库解析
+        vm = emulator.createDalvikVM(new File("D:\\hecai_pan\\apk\\mfw9.3.7.apk")); // 创建Android虚拟机
+        DalvikModule dm = vm.loadLibrary(new File("unidbg-android/src/test/java/com/mfw/so/libmfw.so"), true); // 加载so到虚拟内存
+        module = dm.getModule(); //获取本SO模块的句柄
 
+        vm.setJni(this);
+        vm.setVerbose(true);
+        dm.callJNI_OnLoad(emulator);
+    };
 
-    public String xPreAuthencode(){
-        List<Object> list = new ArrayList<>(10);
-        list.add(vm.getJNIEnv()); // 第一个参数是env
-        list.add(0); // 第二个参数，实例方法是jobject，静态方法是jclazz，直接填0，一般用不到。
-        Object custom = null;
-        DvmObject<?> context = vm.resolveClass("android/content/Context").newObject(custom);// context
-        list.add(vm.addLocalObject(context));
-        list.add(vm.addLocalObject(new StringObject(vm, "muyang")));
-        list.add(vm.addLocalObject(new StringObject(vm, "com.mfw.roadbook")));
-
-        Number number = module.callFunction(emulator, 0x2e301, list.toArray());
-        String result = vm.getObject(number.intValue()).getValue().toString();
-        return result;
-    }
 
 
 }
