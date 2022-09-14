@@ -1,6 +1,7 @@
 package com.mfw;
 
 import com.github.unidbg.Emulator;
+import com.github.unidbg.debugger.Debugger;
 import com.github.unidbg.hook.hookzz.*;
 import com.github.unidbg.linux.android.dvm.AbstractJni;
 import com.github.unidbg.AndroidEmulator;

@@ -2,6 +2,6 @@ package com.github.unidbg.arm.backend;
 
 public interface DebugHook extends CodeHook {
 
-    void onBreak(Backend backend, long address, int size, Object user);
+    void onBreak(Backend backend, long address, int size, Object user); //在断点中
 
 }
