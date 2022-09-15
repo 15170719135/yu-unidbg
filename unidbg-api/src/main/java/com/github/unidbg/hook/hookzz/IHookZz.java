@@ -10,7 +10,7 @@ import com.sun.jna.Pointer;
 //HookZz为Dobby的前身，32位模式下推荐使用HookZz
 public interface IHookZz extends IHook, InlineHook {
 
-    void enable_arm_arm64_b_branch();
+    void enable_arm_arm64_b_branch(); //测试而已
     void disable_arm_arm64_b_branch();
 
     void switch_to_file_log(String path);

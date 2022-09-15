@@ -87,11 +87,11 @@ public class mfwjiu extends AbstractJni{
                 // 类似于Frida args[0]
                 Pointer input = ctx.getPointerArg(0);
                 byte[] inputhex = input.getByteArray(0, 20); //读取20个长度
-                Inspector.inspect(inputhex, "IV ====");
+                Inspector.inspect(inputhex, "preCall IV ====");
 
                 Pointer text = ctx.getPointerArg(1);
                 byte[] texthex = text.getByteArray(0, 64);
-                Inspector.inspect(texthex, "block ==== ");
+                Inspector.inspect(texthex, "preCall block ==== ");
                 ctx.push(input);
                 ctx.push(text);
             }
@@ -103,15 +103,15 @@ public class mfwjiu extends AbstractJni{
                 Pointer IV = ctx.pop();
 
                 byte[] IVhex = IV.getByteArray(0, 20);
-                Inspector.inspect(IVhex, "IV");
+                Inspector.inspect(IVhex, "postCall IV");
 
                 byte[] outputhex = text.getByteArray(0, 64);
-                Inspector.inspect(outputhex, "block out");
+                Inspector.inspect(outputhex, "postCall block out");
 
             }
         });
         hookZz.disable_arm_arm64_b_branch();
-    };
+    }
 
     mfwjiu() {
         emulator = AndroidEmulatorBuilder.for32Bit().setProcessName("com.mfw.roadbook").build(); // 创建模拟器实例

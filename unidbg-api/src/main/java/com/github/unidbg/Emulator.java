@@ -46,7 +46,7 @@ public interface Emulator<T extends NewFileIO> extends Closeable, ArmDisassemble
     TraceHook traceRead(long begin, long end, TraceReadListener listener);
 
     /**
-     * trace memory write
+     * trace memory write 内存跟踪监控
      */
     TraceHook traceWrite();
     TraceHook traceWrite(long begin, long end);
@@ -58,8 +58,8 @@ public interface Emulator<T extends NewFileIO> extends Closeable, ArmDisassemble
      * trace instruction
      * note: low performance
      */
-    TraceHook traceCode(); //打印断点
-    TraceHook traceCode(long begin, long end);
+    TraceHook traceCode(); // 监控代码,打印日志
+    TraceHook traceCode(long begin, long end); // 监控的代码 范围
     TraceHook traceCode(long begin, long end, TraceCodeListener listener);
 
     Number eFunc(long begin, Number... arguments);
