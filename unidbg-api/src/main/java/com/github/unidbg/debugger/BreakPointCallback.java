@@ -5,8 +5,7 @@ import com.github.unidbg.Emulator;
 public interface BreakPointCallback {
 
     /**
-     * 当断点被触发时回调
-     * @return 返回<code>false</code>表示断点成功，返回<code>true</code>表示不触发断点，继续进行 (打印日志,修改值啥的)
+     * 当断点被触发时回调, 返回true表示不暂停，继续进行 (打印日志,修改值啥的)
      */
     boolean onHit(Emulator<?> emulator, long address);
 

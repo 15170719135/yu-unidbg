@@ -1,0 +1,10 @@
+function main(){
+    Java.perform(function (){
+        var Decode = Java.use("com.a.sample.loopcrypto.Decode");
+        Decode.check.implementation = function (str, str2){
+            console.log("str:", str, " md5:", str2);
+            return this.check(str, str2)
+        }
+    })
+}
+setImmediate(main);
