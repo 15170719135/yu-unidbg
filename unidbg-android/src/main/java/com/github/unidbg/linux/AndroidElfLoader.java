@@ -73,6 +73,7 @@ public class AndroidElfLoader extends AbstractLoader<AndroidFileIO> implements M
         backend.mem_map(STACK_BASE - stackSize, stackSize, UnicornConst.UC_PROT_READ | UnicornConst.UC_PROT_WRITE);
 
         setStackPoint(STACK_BASE);
+        // 环境变量 如果某个app 需要某个环境变量, 可以在这补 (问题是如何定位到它需要哪个环境变量呢 ? 貌似只能看代码..)
         this.environ = initializeTLS(new String[] {
                 "ANDROID_DATA=/data",
                 "ANDROID_ROOT=/system",
