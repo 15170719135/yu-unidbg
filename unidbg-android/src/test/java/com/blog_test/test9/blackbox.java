@@ -33,7 +33,7 @@ public class blackbox extends AbstractJni {
 
         vm = emulator.createDalvikVM(new File("D:\\hecai_pan\\apk\\小黑盒.apk")); // 创建Android虚拟机
         vm.setVerbose(true); // 设置是否打印Jni调用细节
-        DalvikModule dm = vm.loadLibrary(new File("unidbg-android/src/test/java/com/blog_test/test9/libnative-lib.so"), true);
+        DalvikModule dm = vm.loadLibrary(new File("unidbg-android/src/test/java/com/blog_test/test9/so/libnative-lib.so"), true);
 
         module = dm.getModule(); //
 
