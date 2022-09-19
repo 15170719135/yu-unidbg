@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // implements IOResolver<AndroidFileIO>
+// 学习补环境 , 当存在 有继承关系时如何补 , 方法 : 加载时用 DvmClass 先暂存起来, 等需要时补给它
 public class main extends AbstractJni {
     private final AndroidEmulator emulator;
     private final VM vm;

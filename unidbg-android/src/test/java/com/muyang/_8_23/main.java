@@ -55,7 +55,7 @@ public class main extends AbstractJni {
         if(signature.equals("android/view/accessibility/AccessibilityManager->getInstalledAccessibilityServiceList()Ljava/util/List;")){
             List<DvmObject<?>> list = new ArrayList<>();
             DvmClass dvmClass = vm.resolveClass("android/accessibilityservice/AccessibilityServiceInfo");
-            // 自己构造一个 , 因为下面要用到 这些属性 getObjectField()
+            // todo 自己构造一个 交给虚拟机, 因为下面要用到 这些属性 getObjectField()
             AccessibilityServiceInfo s = new AccessibilityServiceInfo("com.google.android.marvin.talkback.TalkBackService",
                     "com.google.android.marvin.talkback",
                     "TalkBack");
