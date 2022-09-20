@@ -277,7 +277,7 @@ class SimpleARMDebugger extends AbstractARMDebugger implements Debugger {
     @Override
     final void showHelp(long address) {
         System.out.println("c: continue");
-        System.out.println("n: step over");
+        System.out.println("n: step over 单步执行" );
         if (emulator.isRunning()) {
             System.out.println("bt: back trace");
         }

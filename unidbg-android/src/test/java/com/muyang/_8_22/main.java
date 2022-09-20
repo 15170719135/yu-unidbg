@@ -9,7 +9,7 @@ import com.github.unidbg.memory.Memory;
 
 import java.io.File;
 
-// implements IOResolver<AndroidFileIO>
+// 补 Base64.encodeToString() 方法
 public class main extends AbstractJni {
     private final AndroidEmulator emulator;
     private final VM vm;

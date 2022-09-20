@@ -1,6 +1,6 @@
 package com.muyang._8_29;
 
-import com.bilibili.nativelibrary.SignedQuery;
+
 import com.github.unidbg.AndroidEmulator;
 import com.github.unidbg.Module;
 import com.github.unidbg.linux.android.AndroidEmulatorBuilder;
@@ -23,7 +23,8 @@ public class LibBili1{
         emulator = AndroidEmulatorBuilder.for64Bit().setProcessName("com.bilibili.app").build(); // 创建模拟器实例
         final Memory memory = emulator.getMemory(); // 模拟器的内存操作接口
         memory.setLibraryResolver(new AndroidResolver(23)); // 设置系统类库解析
-        vm = emulator.createDalvikVM(new File("unidbg-android/src/test/java/com/muyang/lesson29/bilibili6.85.0.apk")); // 创建Android虚拟机
+//        vm = emulator.createDalvikVM(new File("D:\\hecai_pan\\apk/bilibili6.85.0.apk")); // 创建Android虚拟机
+        vm = emulator.createDalvikVM(new File("D:\\hecai_pan\\apk\\b站.apk")); // 创建Android虚拟机
         vm.setVerbose(true); // 设置是否打印Jni调用细节
         vm.setDvmClassFactory(new ProxyClassFactory());
         DalvikModule dm = vm.loadLibrary("bili", true);
@@ -57,10 +58,10 @@ public class LibBili1{
         list.add(vm.addLocalObject(input_map));
         Number number = module.callFunction(emulator, 0x9110, list.toArray());
         DvmObject<?> object = vm.getObject(number.intValue());
-        String value = ((SignedQuery) object.getValue()).rawParams;
-        String sign = ((SignedQuery) object.getValue()).sign;
-        System.out.println(value);
-        System.out.println(sign);
+//        String value = ((SignedQuery) object.getValue()).rawParams;
+//        String sign = ((SignedQuery) object.getValue()).sign;
+//        System.out.println(value);
+//        System.out.println(sign);
 
 
 

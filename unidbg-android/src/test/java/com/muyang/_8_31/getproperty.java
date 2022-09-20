@@ -22,6 +22,20 @@ public class getproperty extends AbstractJni implements IOResolver<AndroidFileIO
     private final Module module;
     public final Memory memory;
 
+
+
+    public static void main(String[] args) {
+        getproperty test = new getproperty();
+        test.call();
+    }
+
+    public int call(){
+        List<Object> objectList = new ArrayList<>();
+        objectList.add(vm.getJNIEnv());
+        objectList.add(0);
+        Number number = module.callFunction(emulator, 0x9259, objectList.toArray());
+        return number.intValue();
+    }
     getproperty() {
 //        emulator = AndroidEmulatorBuilder.for32Bit().setRootDir(new File("target/rootfs")).setProcessName("xxxx").build();
         AndroidEmulatorBuilder builder = new AndroidEmulatorBuilder(false){
@@ -55,8 +69,6 @@ public class getproperty extends AbstractJni implements IOResolver<AndroidFileIO
         });
         memory.addHookListener(systemPropertyHook);
 
-
-
         vm = emulator.createDalvikVM(new File("unidbg-android/src/test/java/com/muyang/lesson31/app-debug.apk"));
         vm.setVerbose(true);
 
@@ -65,16 +77,7 @@ public class getproperty extends AbstractJni implements IOResolver<AndroidFileIO
         vm.setJni(this);
         dm.callJNI_OnLoad(emulator);
     }
-    public int call(){
-        List<Object> objectList = new ArrayList<>();
-        objectList.add(vm.getJNIEnv());
-        objectList.add(0);
-        Number number = module.callFunction(emulator, 0x9259, objectList.toArray());
-        return number.intValue(); }
-    public static void main(String[] args) {
-        getproperty test = new getproperty();
-        test.call();
-    }
+
     @Override
     public DvmObject<?> getStaticObjectField(BaseVM vm, DvmClass dvmClass, String signature) {
         switch (signature) {
