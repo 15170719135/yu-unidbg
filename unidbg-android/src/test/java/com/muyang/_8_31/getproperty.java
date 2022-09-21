@@ -55,11 +55,12 @@ public class getproperty extends AbstractJni implements IOResolver<AndroidFileIO
         memory.setLibraryResolver(new AndroidResolver(23)); // 设置系统类库解析
 
         emulator.getSyscallHandler().addIOResolver(this);
+        //todo 案例二: 补 __system_property_get() 获取环境变量的
         SystemPropertyHook systemPropertyHook = new SystemPropertyHook(emulator);
         systemPropertyHook.setPropertyProvider(new SystemPropertyProvider() {
             @Override
             public String getProperty(String key) {
-                System.out.println("muyang getProperty key:"+key);
+                System.out.println("__system_property_get 函数 获取环境变量的 key:"+key);
                 switch (key){
                     case "ro.build.id":
                         return "12345";
@@ -69,15 +70,16 @@ public class getproperty extends AbstractJni implements IOResolver<AndroidFileIO
         });
         memory.addHookListener(systemPropertyHook);
 
-        vm = emulator.createDalvikVM(new File("unidbg-android/src/test/java/com/muyang/lesson31/app-debug.apk"));
+        vm = emulator.createDalvikVM(new File("unidbg-android/src/test/java/com/muyang/_8_31/app-debug.apk"));
         vm.setVerbose(true);
 
-        DalvikModule dm = vm.loadLibrary(new File("unidbg-android/src/test/java/com/muyang/lesson31/libnative-lib.so"), true);
+        DalvikModule dm = vm.loadLibrary(new File("unidbg-android/src/test/java/com/muyang/_8_31/libnative-lib.so"), true);
         module = dm.getModule();
         vm.setJni(this);
         dm.callJNI_OnLoad(emulator);
     }
 
+    // 案例1 : 第1钟方式 获取系统属性
     @Override
     public DvmObject<?> getStaticObjectField(BaseVM vm, DvmClass dvmClass, String signature) {
         switch (signature) {

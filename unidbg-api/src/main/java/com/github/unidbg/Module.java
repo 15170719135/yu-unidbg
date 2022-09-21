@@ -45,6 +45,12 @@ public abstract class Module {
         return regions;
     }
 
+    /*
+     返回 Number
+        通过 DvmObject<?> object =  vm.getObject(number.intValue()) ; // 获取 调用函数的返回值 内存地址值,
+        (xxx)object.getValue() 获取返回的对象 xxx 类型
+        然后就可以获取返回值的任意属性了 ,
+     */
     public abstract Number callFunction(Emulator<?> emulator, long offset, Object... args);
 
     public final Number callFunction(Emulator<?> emulator, String symbolName, Object... args) {

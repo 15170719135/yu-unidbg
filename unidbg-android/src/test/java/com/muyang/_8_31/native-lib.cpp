@@ -81,7 +81,7 @@ Java_com_muyang_lesson31_MainActivity_stringFromJNI(
 
      */
 
-    //第二个常见方式是通过system_property_get 函数获取系统属性也是常见做法
+    //第二个常见方式是通过 system_property_get 函数获取系统属性也是常见做法
     //https://blog.csdn.net/q610098308/article/details/104812279/
     char *key = "ro.build.id";
     char value[256] = {0};

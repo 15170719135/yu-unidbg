@@ -10,6 +10,7 @@ import com.sun.jna.Pointer;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MyARMSyscallHandler extends com.github.unidbg.linux.ARM32SyscallHandler {
+    // 对系统指令 扩展
     public MyARMSyscallHandler(SvcMemory svcMemory) {
         super(svcMemory);
     }

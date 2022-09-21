@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-// 补环境 Java 类
+// 补环境 Java 类 继承关系的 TreeMap
 public class LibBili extends AbstractJni{
     private final AndroidEmulator emulator;
     private final VM vm;
