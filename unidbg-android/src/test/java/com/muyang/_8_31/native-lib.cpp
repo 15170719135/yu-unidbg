@@ -119,6 +119,7 @@ Java_com_muyang_lesson31_MainActivity_stringFromJNI(
     //第六个常见方式是使用系统调用获取相关属性，不管是通过syscall函数还是内联汇编，都属此类。
     //常见的比如useage系统调用
     //https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md#arm-32_bit_EABI
+    //https://blog.csdn.net/u011192270/article/details/118155237
     struct rusage useage;
     getrusage(0,&useage);
     LOGI("第6种方法 :%d", useage.ru_utime.tv_sec);

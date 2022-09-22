@@ -54,7 +54,7 @@ public class getproperty extends AbstractJni implements IOResolver<AndroidFileIO
         memory = emulator.getMemory(); // 模拟器的内存操作接口
         memory.setLibraryResolver(new AndroidResolver(23)); // 设置系统类库解析
 
-        emulator.getSyscallHandler().addIOResolver(this);
+        emulator.getSyscallHandler().addIOResolver(this); //todo 解决案例3 要加的 , 解析文件
         //todo 案例二: 补 __system_property_get() 获取环境变量的
         SystemPropertyHook systemPropertyHook = new SystemPropertyHook(emulator);
         systemPropertyHook.setPropertyProvider(new SystemPropertyProvider() {
@@ -91,7 +91,7 @@ public class getproperty extends AbstractJni implements IOResolver<AndroidFileIO
 
     @Override
     public FileResult<AndroidFileIO> resolve(Emulator<AndroidFileIO> emulator, String pathname, int oflags) {
-        System.out.println("muyang pathname:"+pathname);
+        System.out.println("muyang pathname:"+pathname); //案例3
         return null;
     }
 }

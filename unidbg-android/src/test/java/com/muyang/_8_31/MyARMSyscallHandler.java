@@ -15,13 +15,13 @@ public class MyARMSyscallHandler extends com.github.unidbg.linux.ARM32SyscallHan
         super(svcMemory);
     }
     @Override
-    protected boolean handleUnknownSyscall(Emulator emulator, int NR) {
+    protected boolean handleUnknownSyscall(Emulator emulator, int NR) { // todo 解决 第4种情况
         switch (NR) {
             case 190:
-                vfork(emulator);
+                this.vfork(emulator);
                 return true;
             case 359:
-                pipe2(emulator);
+                this.pipe2(emulator);
                 return true;
         }
 
@@ -44,7 +44,7 @@ public class MyARMSyscallHandler extends com.github.unidbg.linux.ARM32SyscallHan
         int write = getMinFd();
         this.fdMap.put(write, new DumpFileIO(write));
         int read = getMinFd();
-        String stdout = "OPM4.171019.021.P1\n"; // getprop ro.build.id
+        String stdout = "OPM4.171019.021.P1\n"; // getprop ro.build.id todo 这里是输出的结果
         this.fdMap.put(read, new ByteArrayFileIO(0, "pipe2_read_side", stdout.getBytes()));
         pipefd.setInt(0, read);
         pipefd.setInt(4, write);

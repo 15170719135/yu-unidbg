@@ -226,6 +226,9 @@ public class ARM32SyscallHandler extends AndroidSyscallHandler {
                 case 73:
                     backend.reg_write(ArmConst.UC_ARM_REG_R0, rt_sigpending(emulator));
                     return;
+                    // case 77 todo 这里补解决第6种情况 (8_31)
+                case 77:
+                    backend.reg_write(ArmConst.UC_ARM_REG_R0, getrusage(backend, emulator));
                 case 78:
                     backend.reg_write(ArmConst.UC_ARM_REG_R0, gettimeofday(emulator));
                     return;
@@ -535,6 +538,19 @@ public class ARM32SyscallHandler extends AndroidSyscallHandler {
         if (exception instanceof RuntimeException) {
             throw (RuntimeException) exception;
         }
+    }
+
+    private static final int RUSAGE_SELF = 0;
+    private static final int RUSAGE_CHILDREN = -1;
+    private static final int RUSAGE_THREAD = 1;
+
+    //  补设置系统时间 ?
+    private Number getrusage(Backend backend, Emulator<AndroidFileIO> emulator) {
+        int who = backend.reg_read(ArmConst.UC_ARM_REG_R0).intValue();
+        UnidbgPointer pointer = UnidbgPointer.register(emulator, ArmConst.UC_ARM_REG_R1);
+        pointer.setLong(0, 1);
+        pointer.setLong(8, 0x10000);
+        return 0;
     }
 
     private int mlock(Emulator<?> emulator) {
