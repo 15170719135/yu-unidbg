@@ -143,7 +143,7 @@ public class ARM32SyscallHandler extends AndroidSyscallHandler {
             if (handleSyscall(emulator, NR)) {
                 return;
             }
-
+            System.out.println("开始系统调用, 日志格式第一个是 操作命令");
             switch (NR) {
                 case 1:
                     exit(emulator);
@@ -1911,6 +1911,7 @@ public class ARM32SyscallHandler extends AndroidSyscallHandler {
         int oflags = context.getIntArg(2);
         int mode = context.getIntArg(3);
         String pathname = pathname_p.getString(0);
+        //比如 使用系统调用 openat打开了 proc/9720/status这个文件
         String msg = "openat dirfd=" + dirfd + ", pathname=" + pathname + ", oflags=0x" + Integer.toHexString(oflags) + ", mode=" + Integer.toHexString(mode);
         if (log.isDebugEnabled()) {
             log.debug(msg);

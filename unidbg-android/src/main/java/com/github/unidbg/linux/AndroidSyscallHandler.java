@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// 系统调用处理, 通常再加载前会对系统环境检测, 如果确实环境需要进行补环境
 public abstract class AndroidSyscallHandler extends UnixSyscallHandler<AndroidFileIO> implements SyscallHandler<AndroidFileIO> {
 
     private static final Log log = LogFactory.getLog(AndroidSyscallHandler.class);
