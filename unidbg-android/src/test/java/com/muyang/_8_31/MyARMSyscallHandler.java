@@ -17,7 +17,7 @@ public class MyARMSyscallHandler extends com.github.unidbg.linux.ARM32SyscallHan
     @Override
     protected boolean handleUnknownSyscall(Emulator emulator, int NR) { // todo 解决 第4种情况
         switch (NR) {
-            case 190:
+            case 190: //进程号
                 this.vfork(emulator);
                 return true;
             case 359:
@@ -29,6 +29,7 @@ public class MyARMSyscallHandler extends com.github.unidbg.linux.ARM32SyscallHan
     }
 
     private void vfork(Emulator<?> emulator) {
+        //emulator.getUnwinder().unwind(); // 打印调用栈
         EditableArm32RegisterContext context = (EditableArm32RegisterContext) emulator.getContext();
         int childPid = emulator.getPid() + ThreadLocalRandom.current().nextInt(256);
         int r0 = 0;
@@ -43,7 +44,8 @@ public class MyARMSyscallHandler extends com.github.unidbg.linux.ARM32SyscallHan
         int flags = context.getIntArg(1);
         int write = getMinFd();
         this.fdMap.put(write, new DumpFileIO(write));
-        int read = getMinFd();
+        int read = getMinFd(); //上面先理解为固定写法吧..
+
         String stdout = "OPM4.171019.021.P1\n"; // getprop ro.build.id todo 这里是输出的结果
         this.fdMap.put(read, new ByteArrayFileIO(0, "pipe2_read_side", stdout.getBytes()));
         pipefd.setInt(0, read);

@@ -61,6 +61,10 @@ public class DvmClass extends DvmObject<Class<?>> {
         return className.replace('/', '.');
     }
 
+    /**
+     *
+     * @param value 标识只是 为了做对象之间的区分，和代码逻辑无关
+     */
     public DvmObject<?> newObject(Object value) {
         return new DvmObject<>(this, value);
     }

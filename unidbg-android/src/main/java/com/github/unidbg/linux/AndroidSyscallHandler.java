@@ -428,7 +428,7 @@ public abstract class AndroidSyscallHandler extends UnixSyscallHandler<AndroidFi
         }
     }
 
-    protected int pipe2(Emulator<?> emulator) { // popen 命令行窗口
+    protected int pipe2(Emulator<?> emulator) { // pipe2用于进程间的通信 , popen() 命令行窗口
         try {
             RegisterContext context = emulator.getContext();
             Pointer pipefd = context.getPointerArg(0);
