@@ -18,6 +18,8 @@ import com.github.unidbg.memory.Memory;
 import com.github.unidbg.pointer.UnidbgPointer;
 import com.github.unidbg.utils.Inspector;
 import com.sun.jna.Pointer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import unicorn.ArmConst;
 import unicorn.Unicorn;
 
@@ -25,6 +27,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class encrypt extends AbstractJni {
     private final AndroidEmulator emulator;
@@ -32,7 +35,7 @@ public class encrypt extends AbstractJni {
     private final Module module;
 
     private Pointer buffer;
-
+    private static final Log log = LogFactory.getLog(encrypt.class);
     encrypt() {
         // 创建模拟器实例,进程名建议依照实际进程名填写，可以规避针对进程名的校验
         emulator = AndroidEmulatorBuilder.for32Bit().setProcessName("com.sina.oasis").build();
@@ -166,7 +169,27 @@ public class encrypt extends AbstractJni {
             }
         });
     }
-
+    private void printArgs(String signature, VaList vaList) {
+        log.info("------");
+        DvmObject<?> obj;
+        int hash;
+        try {
+            for (int i = 0; i < 10; i++) {
+                hash = vaList.getIntArg(i);
+                obj = vm.getObject(hash);
+                if (Objects.isNull(obj)) {
+                    String logMsg = String.format("signature:%s,参数:%s,值:%s", signature, i, hash);
+                    log.info(logMsg);
+                } else {
+                    String logMsg = String.format("signature:%s,参数:%s,类型:%s,值:%s", signature, i,
+                            obj.getObjectType().getClassName(), obj.getValue());
+                    log.info("logMsg");
+                }
+            }
+        } catch (Exception ignored) {
+            System.out.println("打印参数出错了...");
+        }
+    }
     public void hookByUnicorn(){
         emulator.getBackend().hook_add_new(new CodeHook() {
 

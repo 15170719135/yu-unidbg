@@ -1,15 +1,19 @@
 package com.muyang._8_29;
 
+import com.alibaba.fastjson.parser.JSONLexer;
 import com.github.unidbg.AndroidEmulator;
 import com.github.unidbg.Module;
 import com.github.unidbg.linux.android.AndroidEmulatorBuilder;
 import com.github.unidbg.linux.android.AndroidResolver;
 import com.github.unidbg.linux.android.dvm.*;
 import com.github.unidbg.memory.Memory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.TreeMap;
 
 // 补环境 Java 类 继承关系的 TreeMap
@@ -17,7 +21,7 @@ public class LibBili extends AbstractJni{
     private final AndroidEmulator emulator;
     private final VM vm;
     private final Module module;
-
+    private static final Log log = LogFactory.getLog(LibBili.class);
     LibBili(){
         emulator = AndroidEmulatorBuilder.for64Bit().setProcessName("com.bilibili.app").build(); // 创建模拟器实例
         final Memory memory = emulator.getMemory(); // 模拟器的内存操作接口
