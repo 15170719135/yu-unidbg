@@ -10,6 +10,9 @@ import com.github.unidbg.Module;
  3	Whale	支持	支持	支持导入函数
  4	Dobby	支持	支持
  5	IxHook	支持	支持
+
+ - 第三方Hook框架，包括xHook/Whale/HookZz
+ - 基于 Unicorn Hook 的方案，主要指Unicorn原生Hook和Unidbg封装的Console Debugger
  */
 public interface IHook {
 

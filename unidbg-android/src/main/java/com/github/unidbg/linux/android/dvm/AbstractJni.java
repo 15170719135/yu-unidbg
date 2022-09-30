@@ -35,14 +35,8 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+
 //继承这个类补环境
 public abstract class AbstractJni implements Jni {
 
@@ -993,6 +987,28 @@ public abstract class AbstractJni implements Jni {
             return;
         }
         throw new UnsupportedOperationException(signature);
+    }
+    // callXXX 时打印参数
+    public void printArgs(BaseVM vm, String signature, VaList vaList) {
+        log.info("------");
+        DvmObject<?> obj;
+        int hash;
+        try {
+            for (int i = 0; i < 10; i++) {
+                hash = vaList.getIntArg(i);
+                obj = vm.getObject(hash);
+                if (Objects.isNull(obj)) {
+                    String logMsg = String.format("signature:%s,参数:%s,值:%s", signature, i, hash);
+                    log.info(logMsg);
+                } else {
+                    String logMsg = String.format("signature:%s,参数:%s,类型:%s,值:%s", signature, i,
+                            obj.getObjectType().getClassName(), obj.getValue());
+                    log.info(logMsg);
+                }
+            }
+        } catch (Exception ignored) {
+            System.out.println("打印参数出错了...");
+        }
     }
 
     @Override
