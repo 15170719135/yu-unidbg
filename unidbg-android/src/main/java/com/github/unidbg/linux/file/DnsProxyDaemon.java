@@ -56,6 +56,9 @@ class DnsProxyDaemon implements LocalSocketIO.SocketHandler {
             return getaddrinfo(command);
         } else if (command.startsWith("gethostbyaddr")) {
             return gethostbyaddr(command);
+        } else if(command.startsWith("gethostbyname")){
+            log.info("执行自己实现的 gethostbyname --> ");
+            return gethostbyname(command);
         }
         throw new AbstractMethodError(command);
     }
@@ -190,5 +193,53 @@ class DnsProxyDaemon implements LocalSocketIO.SocketHandler {
         } else {
             throw new IllegalStateException("sdk=" + sdk);
         }
+    }
+
+    // 通过域名获取ip
+    private byte[] gethostbyname(String command) {
+        ByteBuffer buffer = ByteBuffer.allocate(1024);
+        String[] tokens = command.split("\\s");
+        String host = tokens[2];
+
+        try {
+            InetAddress address = InetAddress.getByName(host); // ip 得到域名
+            byte[] addr = address.getAddress();
+
+            if (addr == null) {
+                throw new UnknownHostException();
+            } else {
+                buffer.put((DnsProxyQueryResult + "\0").getBytes());
+                byte[] bytes = host.getBytes(StandardCharsets.UTF_8);
+                buffer.putInt(bytes.length + 1);
+                buffer.put(bytes);
+                buffer.put((byte) 0); // NULL-terminated string 以空字符结尾的字符串
+                buffer.putInt(0); // null to indicate we're done aliases Null表示我们已经完成了别名
+                buffer.putInt(SocketIO.AF_INET); // addrtype
+                buffer.putInt(4); // unknown length 未知的长度
+
+                buffer.putInt(0x10);
+                buffer.put(addr);
+                buffer.putInt(0);
+                buffer.putInt(0);
+                buffer.putInt(0);
+                buffer.putInt(0); // null to indicate we're done addr_list Null表示我们已经完成 addr_list
+            }
+        } catch (UnknownHostException e) {
+            buffer.put((DnsProxyOperationFailed + "\0").getBytes());
+            buffer.putInt(0);
+        }
+
+        buffer.flip();
+        byte[] response = new byte[buffer.remaining()];
+        buffer.get(response);
+        if (log.isDebugEnabled()) {
+            Inspector.inspect(response, "gethostbyname");
+        }
+        return response;
+    }
+
+    public static void main(String[] args) throws UnknownHostException {
+        String ip = "baidu.com";
+        System.out.println(InetAddress.getByName(ip));
     }
 }
