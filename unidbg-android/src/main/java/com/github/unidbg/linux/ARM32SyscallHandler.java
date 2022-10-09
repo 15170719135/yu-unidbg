@@ -143,7 +143,7 @@ public class ARM32SyscallHandler extends AndroidSyscallHandler {
             if (handleSyscall(emulator, NR)) {
                 return;
             }
-            System.out.println("开始系统调用, 日志格式第一个是 操作命令");
+            System.out.printf("开始系统调用, 日志格式第一个是 操作命令 %s \n", NR);
             switch (NR) {
                 case 1:
                     exit(emulator);
