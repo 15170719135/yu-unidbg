@@ -1,0 +1,2 @@
+u0_a472      14889   699 2298980 210456 SyS_epoll_wait      0 S com.sina.weibo
+u0_a472      14998   699 2037812  76084 SyS_epoll_wait      0 S com.sina.weibo:remote

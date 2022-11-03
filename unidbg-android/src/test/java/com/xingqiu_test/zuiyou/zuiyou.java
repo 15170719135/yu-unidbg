@@ -125,6 +125,18 @@ public class zuiyou extends AbstractJni{
         Number number = module.callFunction(emulator, 0x4a0b9, args.toArray());
         Inspector.inspect((byte[]) vm.getObject(number.intValue()).getValue(),"AESencode");
     }
+
+    public void hookRandom(){
+        emulator.attach().addBreakPoint(module.findSymbolByName("lrand48", true).getAddress(), new BreakPointCallback() {
+            @Override
+            public boolean onHit(Emulator<?> emulator, long address) {
+                System.out.println("call lrand48");
+                emulator.getUnwinder().unwind();
+                return true;
+            }
+        });
+    }
+
     public void callsetProtocolKey(String str){
         ArrayList<Object> args = new ArrayList<>(3);
         args.add(vm.getJNIEnv());
@@ -145,7 +157,7 @@ public class zuiyou extends AbstractJni{
             m = i * 2 + 1;
             n = m + 1;
             int intVal = Integer.decode("0x" + hex.substring(i * 2, m) + hex.substring(m, n));
-            ret[i] = Byte.valueOf((byte)intVal);
+            ret[i] = (byte) intVal;
         }
         return ret;
     }
@@ -210,6 +222,7 @@ public class zuiyou extends AbstractJni{
     public static void main(String[] args) {
         zuiyou zuiyou = new zuiyou();
         //zuiyou.hook();
+        zuiyou.hookRandom();
         zuiyou.native_init();
         System.out.println("callEncode===========================================");
         zuiyou.callEncode();
