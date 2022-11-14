@@ -21,22 +21,22 @@ public class WBARM32SyscallHandler extends ARM32SyscallHandler {
     private static final int CLOCK_MONOTONIC_COARSE = 6;
     private static final int CLOCK_BOOTTIME = 7;
 
-    private final long nanoTime = System.nanoTime() - (1000000000L * 3600);
+    private final long nanoTime = System.nanoTime() - (1000000000L * 3600);//前一个小时的纳秒数
 
     @Override
     protected int clock_gettime(Backend backend, Emulator<?> emulator) {
-        int clk_id = backend.reg_read(ArmConst.UC_ARM_REG_R0).intValue();
+        int clk_id = backend.reg_read(ArmConst.UC_ARM_REG_R0).intValue();//获取结构体指针
         Pointer tp = UnidbgPointer.register(emulator, ArmConst.UC_ARM_REG_R1);
         long offset = clk_id == CLOCK_REALTIME ? System.currentTimeMillis() * 1000000L : System.nanoTime() - nanoTime;
-        long tv_sec = offset / 1000000000L;
-        long tv_nsec = offset % 1000000000L;
+        long tv_sec = offset / 1000000000L;//秒
+        long tv_nsec = offset % 1000000000L;//1 秒
 
         switch (clk_id) {
             case CLOCK_REALTIME:
             case CLOCK_MONOTONIC:
             case CLOCK_MONOTONIC_RAW:
             case CLOCK_MONOTONIC_COARSE:
-            case CLOCK_BOOTTIME:
+            case CLOCK_BOOTTIME: //获取开机时间
                 tp.setInt(0, (int) tv_sec);
                 tp.setInt(4, (int) tv_nsec);
                 return 0;

@@ -30,14 +30,15 @@ import java.nio.charset.StandardCharsets;
 
 public class UnWind extends AbstractJni implements IOResolver {
 
-    private static final String apkPath = "D:\\hecai_pan\\apk\\wb.apk";
+    private static final String apkPath = "E:\\BaiduSyncdisk\\sync_pan\\apk\\wb.apk";
 
     public static void main(String[] args) {
         UnWind unWind = new UnWind();
         //1. hook clock_gettime :用于获取clock所指定的时钟的时间值，返回的时间值置于 ts 所指向的timespec结构中，而函数的返回值为-1或者0，分别代表函数调用失败以及成功
         //
         unWind.myhook();
-        unWind.call();
+        //wind.so中的deal函数
+        unWind.call();// 分析点
         //https://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@github.com/15170719135/yu-unidbg.git
     }
     @Override
@@ -107,7 +108,7 @@ public class UnWind extends AbstractJni implements IOResolver {
                     @Override
                     protected UnixSyscallHandler<AndroidFileIO>
                     createSyscallHandler(SvcMemory svcMemory) {
-                        return new WBARM32SyscallHandler(svcMemory);
+                        return new WBARM32SyscallHandler(svcMemory);//todo 重写了获取时间的函数
                     }
                 };
             }
@@ -122,6 +123,8 @@ public class UnWind extends AbstractJni implements IOResolver {
         vm.setJni(this);
         vm.setVerbose(true);
         emulator.getSyscallHandler().addIOResolver(this);
+        //我们在导入库里发现了ASensor_getName这一类传感器相关函数，根据开发经验，这些函数来自于 libandroid.so。
+        //这个SO很难处理，无法加载，Unidbg中通过虚拟模块对它做了一定的实现，libandroid.so对应于Unidbg中的AndroidModule，我们要把它放到内存中来
         // 自定义虚拟libandroid.so
         new WBAndroidModule(emulator, vm).register(memory);
 
