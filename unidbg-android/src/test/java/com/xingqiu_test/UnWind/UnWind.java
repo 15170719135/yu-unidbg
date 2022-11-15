@@ -39,8 +39,6 @@ public class UnWind extends AbstractJni implements IOResolver {
         unWind.myhook();
         //wind.so中的deal函数
         unWind.call();// 分析点
-        //https://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@github.com/15170719135/yu-unidbg.git
-
     }
     @Override
     public FileResult resolve(Emulator emulator, String pathname, int oflags) {
