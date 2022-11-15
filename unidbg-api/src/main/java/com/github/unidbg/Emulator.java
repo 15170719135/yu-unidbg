@@ -130,7 +130,7 @@ public interface Emulator<T extends NewFileIO> extends Closeable, ArmDisassemble
 
     long getReturnAddress();
 
-    void set(String key, Object value);
+    void set(String key, Object value);//MyARMSyscallHandler emulator.get("shuxin") 出来
     <V> V get(String key);
 
 }

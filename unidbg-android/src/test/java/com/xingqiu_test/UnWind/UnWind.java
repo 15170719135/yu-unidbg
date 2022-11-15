@@ -88,7 +88,7 @@ public class UnWind extends AbstractJni implements IOResolver {
             return FileResult.success(new SimpleFileIO(oflags, new File("unidbg-android/src/test/java/com/xingqiu_test/UnWind/popen/ps.txt"), pathname));
         }
         if (("/proc/" + emulator.getPid() + "/status").equals(pathname)) {
-            // 检测TracerPid是否为0
+            // todo 检测TracerPid是否为0
             return FileResult.success(new ByteArrayFileIO(oflags, pathname, "TracerPid:\t0\n".getBytes()));
         }
         return null;
@@ -368,8 +368,8 @@ public class UnWind extends AbstractJni implements IOResolver {
                 RegisterContext registerContext = emulator.getContext();
                 v3.setPointer(0, macPtr);
                 macPtr.setString(0, "[{\"name\":\"bond0\",\"mac\":\"F6:64:A7:9B:C9:F9\"},{\"name\":\"dummy0\",\"mac\":\"52:DC:8E:60:2E:A6\"},{\"name\":\"wlan0\",\"mac\":\"F4:60:E2:96:DB:64\"},{\"name\":\"wlan1\",\"mac\":\"F4:60:E2:17:DB:64\"},{\"name\":\"p2p0\",\"mac\":\"F6:60:E2:18:DB:64\"}]");
-                emulator.getBackend().reg_write(ArmConst.UC_ARM_REG_R0, v3.peer);
-                emulator.getBackend().reg_write(ArmConst.UC_ARM_REG_PC, registerContext.getLRPointer().peer);
+                emulator.getBackend().reg_write(ArmConst.UC_ARM_REG_R0, v3.peer); //r0
+                emulator.getBackend().reg_write(ArmConst.UC_ARM_REG_PC, registerContext.getLRPointer().peer); //r1
 
                 return true;
             }
@@ -379,6 +379,7 @@ public class UnWind extends AbstractJni implements IOResolver {
     private void hookPopen(){
         Debugger debugger = emulator.attach();
         debugger.addBreakPoint(module.findSymbolByName("popen").getAddress(), new BreakPointCallback() {
+            // 执行 ps -r
             final UnidbgPointer psptr = UnidbgPointer.pointer(emulator, module.findSymbolByName("fopen").call(emulator, "ps", "r"));
             @Override
             public boolean onHit(Emulator<?> emulator, long address) {
@@ -388,7 +389,7 @@ public class UnWind extends AbstractJni implements IOResolver {
                 System.out.println("popen arg:"+cmd);
                 emulator.getBackend().reg_write(ArmConst.UC_ARM_REG_PC, registerContext.getLRPointer().peer);
                 if(cmd.equals("ps")){
-                    emulator.getBackend().reg_write(ArmConst.UC_ARM_REG_R0, psptr.peer);
+                    emulator.getBackend().reg_write(ArmConst.UC_ARM_REG_R0, psptr.peer);// 把 ps -r 结果 写进去
                 }
                 return true;
             }

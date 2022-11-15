@@ -100,6 +100,7 @@ public class WBAndroidModule extends VirtualModule<VM> {
                 return read(emulator, vm);
             }
         }));
+        // --------------- todo 补的函数 -----------------------/
         symbols.put("ASensorManager_getInstance", svcMemory.registerSvc(is64Bit ? new Arm64Svc() {
             @Override
             public long handle(Emulator<?> emulator) {

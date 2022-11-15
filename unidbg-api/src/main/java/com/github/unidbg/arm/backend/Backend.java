@@ -14,7 +14,9 @@ public interface Backend {
 
     byte[] reg_read_vector(int regId) throws BackendException;
     void reg_write_vector(int regId, byte[] vector) throws BackendException;
-
+    //往寄存器写值,
+    //参数1: ArmConst.UC_ARM_REG_R0,r1..
+    //参数2: 指针值
     void reg_write(int regId, Number value) throws BackendException;
 
     byte[] mem_read(long address, long size) throws BackendException;
