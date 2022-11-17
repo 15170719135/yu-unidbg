@@ -17,7 +17,7 @@ public interface RegisterContext {
     /**
      * @param index 0 based
      */
-    UnidbgPointer getPointerArg(int index);
+    UnidbgPointer getPointerArg(int index);// 猜想: 获取该指针对象的 第几个属性?
 
     long getLR();
 

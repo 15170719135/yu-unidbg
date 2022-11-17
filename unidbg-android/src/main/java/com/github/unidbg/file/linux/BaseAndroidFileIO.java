@@ -4,6 +4,18 @@ import com.github.unidbg.Emulator;
 import com.github.unidbg.file.BaseFileIO;
 import com.github.unidbg.linux.struct.StatFS;
 import com.sun.jna.Pointer;
+/*
+    常用:
+    1. SimpleFileIO
+    return FileResult.success(new SimpleFileIO(oflags, new File("unidbg-android/src/test/resources/dewu/cpu/boot_id"), pathname));
+    2.ByteArrayFileIO
+    return FileResult.success(new ByteArrayFileIO(oflags, pathname, "文件内容xxx".getBytes(StandardCharsets.UTF_8)));
+    3. 接着是对文件夹或者说目录的处理，也很简单，使用 DirectoryFileIO
+     return FileResult.success(new DirectoryFileIO(oflags, pathname, new File("unidbg-android/src/test/resources/meituan/data")));
+
+     简而言之，从基本规则来说，遇到文件访问那么从真机直接拷贝出来，使用SimpleFileIO / ByteArrayFileIO / DirectoryFileIO 或虚拟文件系统予以返回即可
+
+ */
 
 public abstract class BaseAndroidFileIO extends BaseFileIO implements AndroidFileIO {
 
