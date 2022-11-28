@@ -19,6 +19,7 @@ public interface Backend {
     //参数2: 指针值
     void reg_write(int regId, Number value) throws BackendException;
 
+    //读取内存值 参数1:地址 参数2:读取长度
     byte[] mem_read(long address, long size) throws BackendException;
 
     void mem_write(long address, byte[] bytes) throws BackendException;
